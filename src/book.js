@@ -1,11 +1,8 @@
 import React, { Component } from 'react'
-import { createRef } from 'react';
+import PropTypes from 'prop-types'
 
 
  class book extends Component {
-   constructor(props) {
-    super(props);
-   }
    
     render() {
       const {book,updateShelf} = this.props
@@ -22,6 +19,11 @@ import { createRef } from 'react';
      ? `url(${book.imageLinks.thumbnail})`
      : `url(''})`
      
+      const authors = book.authors || []
+    
+    // const shelfing = book.shelf !== 'none' ? book.shelf : book.shelf === 'none'
+     
+
         return (
           
                 <div className="book">
@@ -35,7 +37,7 @@ import { createRef } from 'react';
                                   <select 
                                    // ref ={this.targetedshelf} 
                                    // onClick ={(e) => toChangeShelf(e)}
-                                    defaultValue = {book.shelf}
+                                    defaultValue = { book && book.shelf }
                                     onChange={(e)=>toChangeShelf(book,e)}
                                   >
                     
@@ -48,10 +50,18 @@ import { createRef } from 'react';
                                   </div>
                                 </div>
                                 <div className="book-title">{book.title}</div>
-                                <div className="book-authors">{book.authors}</div>
-                              </div>
+                                <div className="book-authors">{ book && authors.join(', ')}</div>
+                              </div> // .join(', ')
 
         )
     }
 }
+
+book.propTypes = {
+  book : PropTypes.object.isRequired,
+  toChangeShelf : PropTypes.func,
+
+}
+
+
 export default book

@@ -1,15 +1,8 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import Book from './book'
 
 class mainPage extends Component {
-  constructor(props) {
-    super(props);
-  this.state = {
-
-  }
-}
   
   render() {
     const {books,updateShelf} = this.props
