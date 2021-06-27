@@ -21,7 +21,7 @@ class mainPage extends Component {
                         <div className="bookshelf-books">
                           <ol className="books-grid">
                             { 
-                             books.map(book => {const selectedBooks =
+                            books && books.map(book => {const selectedBooks =
                               book.shelf === 'currentlyReading' 
                               ? <li key={book.id}>
                                 <Book 
@@ -43,7 +43,7 @@ class mainPage extends Component {
                         <div className="bookshelf-books">
                           <ol className="books-grid">
                             { 
-                             books.map(book => {const selectedBooks =
+                             books && books.map(book => {const selectedBooks =
                               book.shelf === 'wantToRead' ? 
                               <li key={book.id}>
                                 <Book 
@@ -64,7 +64,7 @@ class mainPage extends Component {
                         <div className="bookshelf-books">
                           <ol className="books-grid">
                             {
-                             books.map(book => {const selectedBooks =
+                             books && books.map(book => {const selectedBooks =
                               book.shelf === 'read' ? 
                               <li key={book.id}>
                                 <Book 

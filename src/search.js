@@ -8,7 +8,7 @@ import { createRef } from 'react'
 
 
 class search extends Component {
-    _isMounted = false;
+  //  _isMounted = false;
   constructor(props){
   super(props);
   this.state = {
@@ -20,31 +20,44 @@ class search extends Component {
 
   render() {
     const {books,updateShelf} = this.props
-    const {query , filteredBooks =[]} = this.state
+    const { query ,filteredBooks =[]} = this.state
 
     const updateQueryValue = (query) => this.setState(()=>({ query : query }))
 
+     const addShelfToFilteredBooks = async () => {
+     const b =  filteredBooks && filteredBooks.map(book => book) 
+     const B = await books && books.map(book=>book)
+    return (
+       B.id === b.id 
+      ? B.shelf === b.shelf 
+      : b.shelf === 'none' )
+    } 
+    
     const toUpdateQuery = async (query) => {
-      await updateQueryValue(query)
-      const filteredBooks = await BooksAPI.search(query)
-      console.log('search',filteredBooks)
-      this.setState(()=>({ filteredBooks : filteredBooks }))
-      await updateShelf(b) 
+      updateQueryValue(query)
+      if (query) {
+      const res = await BooksAPI.search(query) // .error ? console.log(BooksAPI.search(query).error) :
+      console.log('search',filteredBooks,filteredBooks.error)
+      this.setState(()=>({ filteredBooks : res }))
+      await addShelfToFilteredBooks ()
+      const b = filteredBooks && filteredBooks.map(book => book)
+      await updateShelf(b , b.shelf  )
       console.log('state',this.state)
+      }
+      else{
+        this.setState(()=>({ filteredBooks : [] }))
+      }
     }
-
-     const b = filteredBooks.map(book => book)
-     
 
     this.refEl = createRef()
 
   const showFilterdBooks = filteredBooks.error 
-  ? console.log(filteredBooks.error) // || alert('kindly add proper book to search')
-  :filteredBooks
-  /*.filter(b => {  
+  ? console.log('ERROR:',filteredBooks.error) // || alert('kindly add proper book to search')
+  : filteredBooks && filteredBooks
+  /*.filter(b =>  
           b.title.toLowerCase().includes (query.toLowerCase()) || 
           b.authors.includes(query.toLowerCase())
-       } )  */
+       )  */
   .map(book => 
        <li key={book.id}>
         <Book 
@@ -71,15 +84,16 @@ class search extends Component {
               <ol className="books-grid">
                 {
                   query === '' 
-                  ?  books.map(book => 
-                    (book.shelf === 'currentlyReading'||'wantToRead' ||'read'||'none')  
-                    && <li key={book.id}>
+                  ?  books && books.map(book => 
+                    <li key={book.id}>
                       <Book 
                       book = {book}
                       updateShelf = {updateShelf}
                       /></li> 
                     ) 
-                  : showFilterdBooks
+                  : showFilterdBooks 
+                  // console.log('here' ,showFilterdBooks)
+
                 } 
               </ol>
             </div>
