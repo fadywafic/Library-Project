@@ -21,8 +21,8 @@ import PropTypes from 'prop-types'
      : `url(''})`
      
       const authors = book.authors || []
-      //const shelf = book.shelf || ''
-      const shelfing = (book.shelf !== 'none' ? book.shelf : book.shelf === 'none')
+      const shelf = book.shelf || ''
+      //const shelfing = (book.shelf !== 'none' ? book.shelf : book.shelf === 'none')
      // console.log (book)
 
         return (
@@ -38,7 +38,7 @@ import PropTypes from 'prop-types'
                                   <select 
                                    // ref ={this.targetedshelf} 
                                    // onClick ={(e) => toChangeShelf(e)}
-                                    value = { book && shelfing }
+                                    value = { book && shelf }
                                     onChange={(e)=>toChangeShelf(book,e)}
                                   >
                     

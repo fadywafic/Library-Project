@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import { Link } from 'react-router-dom'
 import * as BooksAPI from './BooksAPI'
 import Book from './book'
+import PropTypes from 'prop-types'
+import { Link } from 'react-router-dom'
 import { createRef } from 'react'
 
 
@@ -24,26 +24,31 @@ class search extends Component {
 
     const updateQueryValue = (query) => this.setState(()=>({ query : query }))
 
-     const addShelfToFilteredBooks = async () => {
-     const b =  filteredBooks && filteredBooks.map(book => book) 
-     const B = await books && books.map(book=>book)
-    return (
-       B.id === b.id 
-      ? B.shelf === b.shelf 
-      : b.shelf === 'none' )
-    } 
+    const addShelfToFilteredBooks = (x) =>
+    books && books.map(B => {  
+    filteredBooks && x.map( b => { 
+       if (B.id === b.id) {b.shelf = B.shelf 
+ /* console.log
+      (B.title , 'B.shelf : ' , B.shelf ,
+       b.title, ' b.shelf : ', b.shelf) */ } 
+      else if (B.id !== b.id) {b.shelf = 'none'} 
+    } ) 
+    } )
     
     const toUpdateQuery = async (query) => {
       updateQueryValue(query)
       if (query) {
-      const res = await BooksAPI.search(query) // .error ? console.log(BooksAPI.search(query).error) :
-      console.log('search',filteredBooks,filteredBooks.error)
+      const res = await BooksAPI.search(query)
+      // console.log('search',filteredBooks,filteredBooks.error)
+      if (res.error) { this.setState(()=>({ filteredBooks : [] })) }
+      else { 
+      await addShelfToFilteredBooks (res)
       this.setState(()=>({ filteredBooks : res }))
-      await addShelfToFilteredBooks ()
       const b = filteredBooks && filteredBooks.map(book => book)
-      await updateShelf(b , b.shelf  )
-      console.log('state',this.state)
+      await updateShelf(b , b.shelf )
+      console.log('state',this.state) 
       }
+    }
       else{
         this.setState(()=>({ filteredBooks : [] }))
       }
@@ -58,7 +63,7 @@ class search extends Component {
           b.title.toLowerCase().includes (query.toLowerCase()) || 
           b.authors.includes(query.toLowerCase())
        )  */
-  .map(book => 
+  .map(book =>  
        <li key={book.id}>
         <Book 
         book = {book}

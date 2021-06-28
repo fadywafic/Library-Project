@@ -1,14 +1,10 @@
-import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
+import React from 'react'
 import Book from './book'
+import { Link } from 'react-router-dom'
 
-class mainPage extends Component {
-  
-  render() {
-    const {books,updateShelf} = this.props
-    
+const mainPage = (props) => {
 
-    return (
+ return (
       <div className='mainPage'>
       <div className="list-books">
                   <div className="list-books-title">
@@ -21,12 +17,12 @@ class mainPage extends Component {
                         <div className="bookshelf-books">
                           <ol className="books-grid">
                             { 
-                            books && books.map(book => {const selectedBooks =
+                            props.books && props.books.map(book => {const selectedBooks =
                               book.shelf === 'currentlyReading' 
                               ? <li key={book.id}>
                                 <Book 
                                 book = {book}
-                                updateShelf = {updateShelf}
+                                updateShelf = {props.updateShelf}
                                 />
 
                               </li> : book.shelf !== 'currentlyReading'
@@ -43,12 +39,12 @@ class mainPage extends Component {
                         <div className="bookshelf-books">
                           <ol className="books-grid">
                             { 
-                             books && books.map(book => {const selectedBooks =
+                             props.books && props.books.map(book => {const selectedBooks =
                               book.shelf === 'wantToRead' ? 
                               <li key={book.id}>
                                 <Book 
                                 book = {book}
-                                updateShelf = {updateShelf}
+                                updateShelf = {props.updateShelf}
                                 /> 
 
                               </li> : book.shelf !== 'wantToRead'
@@ -64,12 +60,12 @@ class mainPage extends Component {
                         <div className="bookshelf-books">
                           <ol className="books-grid">
                             {
-                             books && books.map(book => {const selectedBooks =
+                             props.books && props.books.map(book => {const selectedBooks =
                               book.shelf === 'read' ? 
                               <li key={book.id}>
                                 <Book 
                                 book = {book}
-                                updateShelf = {updateShelf}
+                                updateShelf = {props.updateShelf}
                                 />
 
                               </li> : book.shelf !== 'read'
@@ -89,9 +85,7 @@ class mainPage extends Component {
                   </div>
                 </div>
           </div>
-    
     )
-  }
 }
 
 
